@@ -1,0 +1,19 @@
+{
+  "name": "realestatepriceestimator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VismarkJuarez/RealEstatePriceEstimator.git"
+  },
+  "author": "Vismark Juarez & Joseph Lombardi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VismarkJuarez/RealEstatePriceEstimator/issues"
+  },
+  "homepage": "https://github.com/VismarkJuarez/RealEstatePriceEstimator#readme"
+}
