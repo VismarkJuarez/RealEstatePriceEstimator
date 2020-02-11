@@ -3,7 +3,7 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #34c6eb;
+  background-color: #078524;
   position: fixed; /* Sets the nav bar to a fixed position at the top of the page.*/
   top: 0; /* Pushes nav bar all the way to the top. */
   width: 100%; /* Extends width of the nav bar all the way accross the page. */
