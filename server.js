@@ -59,7 +59,9 @@ app.get("/about_us", function(req, res) {
  * @return HTTP status     The status of the executed HTTP POST request.
  */
 app.post("/post_data_to_predictor_algorithm", (req, res) => {
-  console.log("received the following payload for POSTing to the Flask server: \n" + req.body);
+  var requestBody = req.body;
+  console.log("received the following payload for POSTing to the Flask server: \n");
+  console.log(requestBody);
   res.send("THANK YOU");
 });
 
