@@ -37,13 +37,24 @@ app.get("/how_it_works", function(req, res) {
 });
 
 app.get("/about_us", function(req, res) {
-  res.sendFile(path.resolve("html/about_us.html"));
+
 });
 
-
-
-
-
+/**
+ * This endpoint will be invoked when the `predictorUserInputSection`
+ * form (in the `predictor.html` file) is submitted.
+ *
+ * The function will then submit an HTTP POST request to the Python
+ * Flask server, with the user's input as the request body, to process
+ * the user input.
+ *
+ * @param  httpRequest req request from the form.
+ * @param  response res The response to be returned from this function.
+ * @return HTTP status     The status of the executed HTTP POST request.
+ */
+app.post("/post_data_to_predictor_algorithm", function(req, res) {
+  res.send("THANK YOU");
+});
 
 
 //Start-up behaviour.
