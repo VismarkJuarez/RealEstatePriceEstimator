@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const fs = require("fs");
 const bodyParser = require('body-parser'); //for parsing post requests
+const request = require('request') //for making HTTP requests
 
 //specifies that this app will be using express.
 const app = express();
@@ -14,6 +15,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 //static AWS EC2 instance server port. Edit with caution.
 const serverPort = 5001;
+
+const FLASK_SERVER_LOCAL_ENDPOINT = "http://localhost:5000/post";
 
 //Allow the use of static files in project directory
 app.use('/js', express.static(__dirname + '/js'));
@@ -62,8 +65,23 @@ app.post("/post_data_to_predictor_algorithm", (req, res) => {
   var requestBody = req.body;
   console.log("received the following payload for POSTing to the Flask server: \n");
   console.log(requestBody);
+  postUserInputToFlaskServer(requestBody);
   res.send("THANK YOU");
 });
+
+function postUserInputToFlaskServer(userInput) {
+  console.log(userInput);
+  request.post(FLASK_SERVER_LOCAL_ENDPOINT, {
+    json: userInput
+  }, (error, res, body) => {
+  if (error) {
+    console.error(error);
+    return;
+  }
+  console.log(`statusCode: ${res.statusCode}`);
+  console.log(body);
+  });
+}
 
 
 //Start-up behaviour.
