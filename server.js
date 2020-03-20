@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 //static AWS EC2 instance server port. Edit with caution.
 const serverPort = 5001;
 
-const FLASK_SERVER_LOCAL_ENDPOINT = "http://localhost:5000/post";
+const FLASK_SERVER_LOCAL_ENDPOINT = "http://localhost:5000/predictPrice";
 
 //Allow the use of static files in project directory
 app.use('/js', express.static(__dirname + '/js'));
@@ -49,6 +49,24 @@ app.get("/about_us", function(req, res) {
 
 });
 
+function parseRequestBody(reqBody) {
+  var averageAreaIncome = parseInt(reqBody.averageAreaIncome, 10);
+  var averageAreaNumberOfRooms = parseInt(reqBody.averageAreaNumberOfRooms, 10);
+  var averageAreaHouseAge = parseInt(reqBody.averageAreaHouseAge, 10);
+  var averageAreaNumberOfBedrooms = parseInt(reqBody.averageAreaNumberOfBedrooms, 10);
+  var areaPopulation = parseInt(reqBody.areaPopulation, 10);
+
+  var parsedRequestBody = {
+    "averageAreaIncome": averageAreaIncome,
+    "averageAreaNumberOfRooms": averageAreaNumberOfRooms,
+    "averageAreaHouseAge": averageAreaHouseAge,
+    "averageAreaNumberOfBedrooms": averageAreaNumberOfBedrooms,
+    "areaPopulation": areaPopulation
+  };
+
+  return parsedRequestBody;
+}
+
 /**
  * This endpoint will be invoked when the `predictorUserInputSection`
  * form (in the `predictor.html` file) is submitted.
@@ -62,15 +80,13 @@ app.get("/about_us", function(req, res) {
  * @return HTTP status     The status of the executed HTTP POST request.
  */
 app.post("/post_data_to_predictor_algorithm", (req, res) => {
-  var requestBody = req.body;
-  console.log("received the following payload for POSTing to the Flask server: \n");
+  var requestBody = parseRequestBody(req.body);
+  console.log("received the following user input: \n");
   console.log(requestBody);
   postUserInputToFlaskServer(requestBody);
-  res.send("THANK YOU");
 });
 
 function postUserInputToFlaskServer(userInput) {
-  console.log(userInput);
   request.post(FLASK_SERVER_LOCAL_ENDPOINT, {
     json: userInput
   }, (error, res, body) => {
