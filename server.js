@@ -46,7 +46,7 @@ app.get("/how_it_works", function(req, res) {
 });
 
 app.get("/about_us", function(req, res) {
-
+  res.sendFile(path.resolve("html/about_us.html"))
 });
 
 function parseRequestBody(reqBody) {
