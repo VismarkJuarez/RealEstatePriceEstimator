@@ -19,6 +19,9 @@ const serverPort = 5001;
 const FLASK_SERVER_LOCAL_ENDPOINT = "http://localhost:5000/post";
 
 //Allow the use of static files in project directory
+app.use('/img', express.static(__dirname + '/img'));
+app.use('/scss', express.static(__dirname + '/scss'));
+app.use('/vendor', express.static(__dirname + '/vendor'));
 app.use('/js', express.static(__dirname + '/js'));
 app.use('/html', express.static(__dirname + '/html'));
 app.use('/css', express.static(__dirname + '/css'));
