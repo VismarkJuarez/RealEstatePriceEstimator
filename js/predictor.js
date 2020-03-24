@@ -30,10 +30,16 @@ function callPredictor() {
   console.log("sending the following payload: " + userInputAsJSON);
 
   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+
+  xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            predictionText.innerHTML = this.responseText;
+        }
+    };
+
   var theUrl = "/json-handler";
   xmlhttp.open("POST", "http://localhost:5000/predictPrice");
   xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   var responseBody = xmlhttp.send(userInputAsJSON);
 
-  predictionText.innerHTML = responseBody;
 }
