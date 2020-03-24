@@ -18,19 +18,22 @@
     </section>
 
     <section id="predictorUserInputSection">
-    <form action="/post_data_to_predictor_algorithm" method="POST" id="attributeInputForm">
-      <input class="textInput" required name="averageAreaIncome" placeholder="Average Area Income" />
-      <input class="textInput" required name="averageAreaNumberOfRooms" placeholder="Average Area Number of Rooms" />
-      <input class="textInput" required name="averageAreaHouseAge" placeholder="Average Area House Age" />
-      <input class="textInput" required name="averageAreaNumberOfBedrooms" placeholder="Average Area Number of Bedrooms"/>
-      <input class="textInput" required name="areaPopulation" placeholder="Area Population"/>
-      <button id="submitButton">Submit</button>
-    </form>
-  </section>
+      <form action="/post_data_to_predictor_algorithm" method="POST" id="attributeInputForm">
+        <input id="averageAreaIncome" class="textInput" required name="averageAreaIncome" placeholder="Average Area Income" />
+        <input id="averageAreaNumberOfRooms" class="textInput" required name="averageAreaNumberOfRooms" placeholder="Average Area Number of Rooms" />
+        <input id="averageAreaHouseAge" class="textInput" required name="averageAreaHouseAge" placeholder="Average Area House Age" />
+        <input id="averageAreaNumberOfBedrooms" class="textInput" required name="averageAreaNumberOfBedrooms" placeholder="Average Area Number of Bedrooms"/>
+        <input id="areaPopulation" class="textInput" required name="areaPopulation" placeholder="Area Population"/>
+        <button id="submitButton">Submit</button>
+      </form>
+    </section>
 
-  <section id="predictionResultsSection">
-    <p id="predictionText"><font size="6">here </p>
-  </section>
+    <section id="predictionResultsSection">
+      <p id="predictionText"><font size="6">This is the text</p>
+    </section>
+
+    <script src="js/predictor.js"></script>
+
   </body>
 
 </html>

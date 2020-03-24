@@ -80,10 +80,11 @@ function parseRequestBody(reqBody) {
  * @return HTTP status     The status of the executed HTTP POST request.
  */
 app.post("/post_data_to_predictor_algorithm", (req, res) => {
-  var requestBody = parseRequestBody(req.body);
+  /*
   console.log("received the following user input: \n");
   console.log(requestBody);
   postUserInputToFlaskServer(requestBody);
+  */
 });
 
 function postUserInputToFlaskServer(userInput) {
