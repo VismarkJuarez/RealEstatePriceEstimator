@@ -53,3 +53,7 @@ li a:hover:not(.active) {
   margin: auto;
   display: block;
 }
+
+#predictionText {
+  text-align: center;
+}
