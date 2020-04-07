@@ -1,45 +1,63 @@
-ul {
-  list-style-type: none;
+
+#masthead {
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  background-color: #078524;
-  position: fixed; /* Sets the nav bar to a fixed position at the top of the page.*/
-  top: 0; /* Pushes nav bar all the way to the top. */
-  width: 100%; /* Extends width of the nav bar all the way accross the page. */
-}
-
-li {
-  float: left; /* Align items from left to right. */
-}
-
-li a {
-  display: block; /* Keeps items on the same row. */
-  color: white;
-  text-align: center; /* Keep the text centered in it's tab. */
-  padding: 14px 16px; /* Give the text some padding to space things out & increase readability.*/
-  text-decoration: none; /* Removes default underlining under the text. */
-}
-
-li a:hover:not(.active) {
-  background-color: #111;
-}
-
-.active {
-  background-color: #4CAF50;
-}
-
-.bodyContent {
-  margin-top: 100px; /*nav bar is fixed.  This property prevents content overlay.*/
-}
-
-/*----------------------predictor.html-----------------------*/
-
-#attributeInputForm {
+  height: auto;
+  width: 100%;
+  background-color: #62c4a0;
   text-align: center;
 }
 
- .textInput {
+.submitButton {
+  background-color: #62c4a0;
+}
+
+#porchImage {
+  padding-top: 100px;
+  padding-right: 30px;
+  padding-bottom: 50px;
+  padding-left: 30px;
+}
+
+#bannerMessage {
+  font-size: 80px
+}
+
+#bannerText {
+  padding-top: 50px;
+  color: white;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+.divider {
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+
+.searchSection {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: 100%;
+  background-color: white;
+  text-align: center;
+  font-size: 80px
+}
+
+#searchHeading {
+  padding-top: 50px;
+  color: #091310;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+#searchForm {
+  text-align: center;
+}
+
+.textInput {
   width: 50%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -54,6 +72,18 @@ li a:hover:not(.active) {
   display: block;
 }
 
-#predictionText {
-  text-align: center;
+#aboutSection {
+  background-color: #62c4a0;
+}
+
+.aboutHeading {
+  padding-top: 50px;
+  font-size: 200px
+  color: white;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+.aboutText {
+  color: white;
 }
