@@ -19,5 +19,34 @@ function makeRequest() {
   console.log(averageAreaHouseAge);
   console.log(averageAreaNumberOfBedrooms);
   console.log(areaPopulation);
+
+  postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
+    averageAreaHouseAge, averageAreaNumberOfBedrooms,
+    areaPopulation);
+
   console.log("sent, bruh.");
+}
+
+function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
+  averageAreaHouseAge, averageAreaNumberOfBedrooms, areaPopulation) {
+
+  let payload = {
+    averageAreaIncome: averageAreaIncome,
+    averageAreaNumberOfRooms: averageAreaNumberOfRooms,
+    averageAreaHouseAge: averageAreaHouseAge,
+    averageAreaNumberOfBedrooms: averageAreaNumberOfBedrooms,
+    areaPopulation: areaPopulation
+  };
+
+  let response = fetch('http://localhost:5000/predictPrice', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+
+    },
+    body: JSON.stringify(payload)
+  });
+
+  let result = response.json();
+  alert(result.message);
 }
