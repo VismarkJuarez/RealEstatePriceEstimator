@@ -1,11 +1,15 @@
 var myButton = document.getElementById("myButton");
+
 var averageAreaIncomeInput = document.getElementById('income');
 var averageAreaNumberOfRoomsInput = document.getElementById('num_of_rooms');
 var averageAreaHouseAgeInput = document.getElementById('age');
 var averageAreaNumberOfBedroomsInput = document.getElementById('bedrooms');
 var areaPopulationInput = document.getElementById('population');
 
+var priceEstimateParagraph = document.getElementById('priceEstimate');
+
 myButton.addEventListener("click", makeRequest);
+
 
 function makeRequest() {
   var averageAreaIncome = parseInt(averageAreaIncomeInput.value, 10);
@@ -23,9 +27,8 @@ function makeRequest() {
   postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
     averageAreaHouseAge, averageAreaNumberOfBedrooms,
     areaPopulation);
-
-  console.log("sent, bruh.");
 }
+
 
 function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
   averageAreaHouseAge, averageAreaNumberOfBedrooms, areaPopulation) {
@@ -38,15 +41,15 @@ function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
     "areaPopulation": areaPopulation
   });
 
-  console.log('made it into the function!');
-  console.log("sending the following payload: " + userInputAsJSON);
+  console.log("sending the following payload to the API: " + userInputAsJSON);
 
   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
 
   xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            //predictionText.innerHTML = this.responseText;
-            alert(this.responseText);
+          //Extracting, formatting and outputting the resulting prediction.
+          var usdFormattedPrediction = formatPredictionResponse(this.responseText);
+          priceEstimateParagraph.innerHTML = usdFormattedPrediction;
         }
     };
 
@@ -55,5 +58,23 @@ function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
   var responseBody = xmlhttp.send(userInputAsJSON);
 
   console.log("response body: " + responseBody);
+}
 
+
+/**
+ * TODO: This logic is overly complicated --- needs to be simplified.
+ * TODO: Add commas.
+ *
+ * [formatPredictionResponse description]
+ * @param  {[type]} predictionJson [description]
+ * @return {[type]}                [description]
+ */
+function formatPredictionResponse(predictionJson) {
+  var predictionJsonWithoutMetadata = predictionJson.split(":");
+  var predictionString = predictionJsonWithoutMetadata[1].split("}")[0];
+  var splitPrediction = predictionString.split(".");
+  var dollarValue = splitPrediction[0];
+  var centValue = splitPrediction[1].substr(0,2); //up to two decimal places
+  var predictionAsDollarAmount = "$" + dollarValue + "." + centValue;
+  return predictionAsDollarAmount;
 }
