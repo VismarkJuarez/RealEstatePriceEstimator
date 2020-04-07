@@ -8,11 +8,11 @@ var areaPopulationInput = document.getElementById('population');
 myButton.addEventListener("click", makeRequest);
 
 function makeRequest() {
-  var averageAreaIncome = averageAreaIncomeInput.value;
-  var averageAreaNumberOfRooms = averageAreaNumberOfRoomsInput.value;
-  var averageAreaHouseAge = averageAreaHouseAgeInput.value;
-  var averageAreaNumberOfBedrooms = averageAreaNumberOfBedroomsInput.value;
-  var areaPopulation = areaPopulationInput.value;
+  var averageAreaIncome = parseInt(averageAreaIncomeInput.value, 10);
+  var averageAreaNumberOfRooms = parseInt(averageAreaNumberOfRoomsInput.value, 10);
+  var averageAreaHouseAge = parseInt(averageAreaHouseAgeInput.value, 10);
+  var averageAreaNumberOfBedrooms = parseInt(averageAreaNumberOfBedroomsInput.value, 10);
+  var areaPopulation = parseInt(areaPopulationInput.value, 10);
 
   console.log(averageAreaIncome);
   console.log(averageAreaNumberOfRooms);
@@ -30,23 +30,30 @@ function makeRequest() {
 function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
   averageAreaHouseAge, averageAreaNumberOfBedrooms, areaPopulation) {
 
-  let payload = {
-    averageAreaIncome: averageAreaIncome,
-    averageAreaNumberOfRooms: averageAreaNumberOfRooms,
-    averageAreaHouseAge: averageAreaHouseAge,
-    averageAreaNumberOfBedrooms: averageAreaNumberOfBedrooms,
-    areaPopulation: areaPopulation
-  };
-
-  let response = fetch('http://localhost:5000/predictPrice', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-
-    },
-    body: JSON.stringify(payload)
+  var userInputAsJSON = JSON.stringify({
+    "averageAreaIncome": averageAreaIncome,
+    "averageAreaNumberOfRooms": averageAreaNumberOfRooms,
+    "averageAreaHouseAge": averageAreaHouseAge,
+    "averageAreaNumberOfBedrooms": averageAreaNumberOfBedrooms,
+    "areaPopulation": areaPopulation
   });
 
-  let result = response.json();
-  alert(result.message);
+  console.log('made it into the function!');
+  console.log("sending the following payload: " + userInputAsJSON);
+
+  var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+
+  xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            //predictionText.innerHTML = this.responseText;
+            alert(this.responseText);
+        }
+    };
+
+  xmlhttp.open("POST", "http://localhost:5000/predictPrice");
+  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  var responseBody = xmlhttp.send(userInputAsJSON);
+
+  console.log("response body: " + responseBody);
+
 }
