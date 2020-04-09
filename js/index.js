@@ -1,5 +1,8 @@
 var myButton = document.getElementById("myButton");
 
+//Initiating objects to hold charts data (these will be initialized later)
+var linearRegressionChart = null;
+
 var averageAreaIncomeInput = document.getElementById('income');
 var averageAreaNumberOfRoomsInput = document.getElementById('num_of_rooms');
 var averageAreaHouseAgeInput = document.getElementById('age');
@@ -9,7 +12,6 @@ var areaPopulationInput = document.getElementById('population');
 var priceEstimateParagraph = document.getElementById('priceEstimate');
 
 myButton.addEventListener("click", makeRequest);
-
 
 function makeRequest() {
   var averageAreaIncome = parseInt(averageAreaIncomeInput.value, 10);
@@ -27,6 +29,19 @@ function makeRequest() {
   postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
     averageAreaHouseAge, averageAreaNumberOfBedrooms,
     areaPopulation);
+
+  //should be moved elsewhere
+  generateGraph();
+}
+
+function fetchSimilarPricedHomes(price) {
+  //http://localhost:5000/predictPrice
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", "http://localhost:5000/predictPrice/" + price, false ); // false for synchronous request
+  xmlHttp.send( null );
+  var responseText = xmlHttp.responseText
+  console.log(responseText)
+  return responseText;
 }
 
 
@@ -50,6 +65,8 @@ function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
           //Extracting, formatting and outputting the resulting prediction.
           var usdFormattedPrediction = formatPredictionResponse(this.responseText);
           priceEstimateParagraph.innerHTML = usdFormattedPrediction;
+
+
         }
     };
 
@@ -75,6 +92,50 @@ function formatPredictionResponse(predictionJson) {
   var splitPrediction = predictionString.split(".");
   var dollarValue = splitPrediction[0];
   var centValue = splitPrediction[1].substr(0,2); //up to two decimal places
-  var predictionAsDollarAmount = "$" + dollarValue + "." + centValue;
+  var dollarAndCentValue = dollarValue + "." + centValue;
+  var predictionAsDollarAmount = "$" + dollarAndCentValue;
+
+  var dollarAndCentAsFloat = parseFloat(dollarAndCentValue);
+
+  //TODO: should be moved elsewhere
+  fetchSimilarPricedHomes(dollarAndCentAsFloat);
+
   return predictionAsDollarAmount;
+}
+
+
+
+function generateGraph() {
+  //If the chart already contains data on it, destroy it.
+  if (linearRegressionChart != null) {
+    linearRegressionChart.destroy();
+  }
+
+  //construct a new Chart object on the canvas.
+  var ctx = document.getElementById('estimate-results-canvas').getContext('2d');
+  linearRegressionChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["one", "two", "three", "four", "five"],
+      datasets: [{
+        label: "Price comparison",
+        data: [2, 3, 5, 4, 8],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 0.5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRation: true,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
 }
