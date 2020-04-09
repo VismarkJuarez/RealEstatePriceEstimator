@@ -4,12 +4,16 @@
   padding: 0;
   height: auto;
   width: 100%;
-  background-color: #62c4a0;
+  background-color: #476481;
   text-align: center;
 }
 
 .submitButton {
   background-color: #62c4a0;
+}
+
+.myClass {
+  position: fixed;
 }
 
 #porchImage {
@@ -34,7 +38,6 @@
   margin: 0 auto;
   padding-bottom: 50px;
 }
-
 
 .searchSection {
   margin: 0;
