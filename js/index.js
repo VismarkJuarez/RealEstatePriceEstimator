@@ -32,16 +32,102 @@ function makeRequest() {
 
   //should be moved elsewhere
   generateGraph();
+
 }
 
 function fetchSimilarPricedHomes(price) {
   //http://localhost:5000/predictPrice
   var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open( "GET", "http://localhost:5000/predictPrice/" + price, false ); // false for synchronous request
+  xmlHttp.open( "GET", "http://localhost:5000/similarlyPricedRecords/"
+    + price, false ); // false for synchronous request
+
   xmlHttp.send( null );
   var responseText = xmlHttp.responseText
   console.log(responseText)
+
+  var rowsList = extractRowsListFromRowsJson(responseText);
+  var firstItem = rowsList[0];
+
+  //console.log("firstItem income: " + firstItem["Avg. Area Income"]);
+  populateSimilarRecordsTable(rowsList);
+
   return responseText;
+}
+
+
+function populateSimilarRecordsTable(rowsList) {
+
+  //iterate through each element. Each entry is a new row in the chart.
+  for(let i = 0; i < rowsList.length; i++) {
+    var rowObject = deserializeRowObject(rowsList[i]);
+    console.log(rowObject);
+  }
+}
+
+
+/*
+Receives a JSON-string formatted representation of a row, which looks
+as follows:
+
+{
+  "Avg. Area Income": 37971.20757,
+  "Avg. Area House Age": 4.291223903,
+  "Avg. Area Number of Rooms": 5.807509527,
+  "Avg. Area Number of Bedrooms": 3.24,
+  "Area Population": 33267.76773,
+  "Price": 31140.51762,
+  "Address": "98398 Terrance Pines\nSouth Joshua, MT 00544-8919"
+}
+
+The same data is returned, as a JSON object.
+
+*/
+function deserializeRowObject(rowAsJson) {
+
+  var rowObject = {
+    avgAreaIncome: rowAsJson["Avg. Area Income"],
+    avgAreaHouseAge: rowAsJson["Avg. Area House Age"],
+    avgAreaNumberOfRooms: rowAsJson["Avg. Area Number of Rooms"],
+    avgAreaNumberOfBedrooms: rowAsJson["Avg. Area Number of Bedrooms"],
+    areaPopulation: rowAsJson["Area Population"],
+    price: rowAsJson["Price"],
+    address: rowAsJson["Address"]
+  };
+  
+  return rowObject;
+}
+
+
+/*
+jsonToParse example:
+
+{
+    "rows": [
+        {
+            "Avg. Area Income": 37971.20757,
+            "Avg. Area House Age": 4.291223903,
+            "Avg. Area Number of Rooms": 5.807509527,
+            "Avg. Area Number of Bedrooms": 3.24,
+            "Area Population": 33267.76773,
+            "Price": 31140.51762,
+            "Address": "98398 Terrance Pines\nSouth Joshua, MT 00544-8919"
+        },
+        {
+            "Avg. Area Income": 47320.65721,
+            "Avg. Area House Age": 3.55805376,
+            "Avg. Area Number of Rooms": 7.006987009,
+            "Avg. Area Number of Bedrooms": 3.16,
+            "Area Population": 15776.6186,
+            "Price": 15938.65792,
+            "Address": "91410 Megan Camp Suite 360\nLaurafort, OH 15735"
+        }
+    ]
+}
+
+This function returns the "rows" property in the above json.
+*/
+function extractRowsListFromRowsJson(jsonToParse) {
+  return JSON.parse(jsonToParse)["rows"];
 }
 
 
@@ -65,8 +151,6 @@ function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
           //Extracting, formatting and outputting the resulting prediction.
           var usdFormattedPrediction = formatPredictionResponse(this.responseText);
           priceEstimateParagraph.innerHTML = usdFormattedPrediction;
-
-
         }
     };
 
@@ -75,6 +159,10 @@ function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
   var responseBody = xmlhttp.send(userInputAsJSON);
 
   console.log("response body: " + responseBody);
+}
+
+function extractListOfRows() {
+
 }
 
 
@@ -102,7 +190,6 @@ function formatPredictionResponse(predictionJson) {
 
   return predictionAsDollarAmount;
 }
-
 
 
 function generateGraph() {
