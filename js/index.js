@@ -8,6 +8,7 @@ var averageAreaNumberOfRoomsInput = document.getElementById('num_of_rooms');
 var averageAreaHouseAgeInput = document.getElementById('age');
 var averageAreaNumberOfBedroomsInput = document.getElementById('bedrooms');
 var areaPopulationInput = document.getElementById('population');
+var similarRecordsTable = document.getElementById('similarRecordsTable');
 
 var priceEstimateParagraph = document.getElementById('priceEstimate');
 
@@ -35,6 +36,11 @@ function makeRequest() {
 
 }
 
+//TODO: clean up the table's numeric values
+//TODO: Refactor the logic to something more maintainable
+//TODO: Clear table when a new query is made (except for table header)
+//TODO: don't show table at all if no results are found
+//TODO: add table description
 function fetchSimilarPricedHomes(price) {
   //http://localhost:5000/predictPrice
   var xmlHttp = new XMLHttpRequest();
@@ -61,6 +67,27 @@ function populateSimilarRecordsTable(rowsList) {
   for(let i = 0; i < rowsList.length; i++) {
     var rowObject = deserializeRowObject(rowsList[i]);
     console.log(rowObject);
+
+    //Add a new row as the last row in the table
+    var row = similarRecordsTable.insertRow(-1);
+
+    //add each cell to the row.
+    var avgAreaIncomeCell = row.insertCell(-1);
+    var avgAreaHouseAgeCell = row.insertCell(-1);
+    var avgNumOfRoomsCell = row.insertCell(-1);
+    var avgAreaNumberOfBedroomsCell = row.insertCell(-1);
+    var areaPopulationCell = row.insertCell(-1);
+    var priceCell = row.insertCell(-1);
+    var addressCell = row.insertCell(-1);
+
+    //Setting the contents of the cells
+    avgAreaIncomeCell.innerHTML = rowObject.avgAreaIncome;
+    avgAreaHouseAgeCell.innerHTML = rowObject.avgAreaHouseAge;
+    avgNumOfRoomsCell.innerHTML = rowObject.avgAreaNumberOfRooms;
+    avgAreaNumberOfBedroomsCell.innerHTML = rowObject.avgAreaNumberOfBedrooms;
+    areaPopulationCell.innerHTML = rowObject.areaPopulation;
+    priceCell.innerHTML = rowObject.price;
+    addressCell.innerHTML = rowObject.address;
   }
 }
 
@@ -82,18 +109,18 @@ as follows:
 The same data is returned, as a JSON object.
 
 */
-function deserializeRowObject(rowAsJson) {
+function deserializeRowObject(rowAsJsonString) {
 
   var rowObject = {
-    avgAreaIncome: rowAsJson["Avg. Area Income"],
-    avgAreaHouseAge: rowAsJson["Avg. Area House Age"],
-    avgAreaNumberOfRooms: rowAsJson["Avg. Area Number of Rooms"],
-    avgAreaNumberOfBedrooms: rowAsJson["Avg. Area Number of Bedrooms"],
-    areaPopulation: rowAsJson["Area Population"],
-    price: rowAsJson["Price"],
-    address: rowAsJson["Address"]
+    avgAreaIncome: rowAsJsonString["Avg. Area Income"],
+    avgAreaHouseAge: rowAsJsonString["Avg. Area House Age"],
+    avgAreaNumberOfRooms: rowAsJsonString["Avg. Area Number of Rooms"],
+    avgAreaNumberOfBedrooms: rowAsJsonString["Avg. Area Number of Bedrooms"],
+    areaPopulation: rowAsJsonString["Area Population"],
+    price: rowAsJsonString["Price"],
+    address: rowAsJsonString["Address"]
   };
-  
+
   return rowObject;
 }
 
@@ -149,7 +176,7 @@ function postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
   xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           //Extracting, formatting and outputting the resulting prediction.
-          var usdFormattedPrediction = formatPredictionResponse(this.responseText);
+          var usdFormattedPrediction = formatAsUSD(this.responseText);
           priceEstimateParagraph.innerHTML = usdFormattedPrediction;
         }
     };
@@ -174,7 +201,8 @@ function extractListOfRows() {
  * @param  {[type]} predictionJson [description]
  * @return {[type]}                [description]
  */
-function formatPredictionResponse(predictionJson) {
+function formatAsUSD(predictionJson) {
+  console.log(predictionJson);
   var predictionJsonWithoutMetadata = predictionJson.split(":");
   var predictionString = predictionJsonWithoutMetadata[1].split("}")[0];
   var splitPrediction = predictionString.split(".");
