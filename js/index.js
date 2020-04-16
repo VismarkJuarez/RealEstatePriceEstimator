@@ -3,6 +3,9 @@ var myButton = document.getElementById("myButton");
 //Initiating objects to hold charts data (these will be initialized later)
 var linearRegressionChart = null;
 
+var similarPricesList = [];
+var similarPricesAddressList = [];
+
 var averageAreaIncomeInput = document.getElementById('income');
 var averageAreaNumberOfRoomsInput = document.getElementById('num_of_rooms');
 var averageAreaHouseAgeInput = document.getElementById('age');
@@ -27,13 +30,14 @@ function makeRequest() {
   console.log(averageAreaNumberOfBedrooms);
   console.log(areaPopulation);
 
+  //TODO refactor to extract the similarPricedhome GET req out of the downward
+  //processing scheme.
   postUserInputToApi(averageAreaIncome, averageAreaNumberOfRooms,
     averageAreaHouseAge, averageAreaNumberOfBedrooms,
     areaPopulation);
 
   //should be moved elsewhere
   generateGraph();
-
 }
 
 //TODO: clean up the table's numeric values
@@ -88,7 +92,14 @@ function populateSimilarRecordsTable(rowsList) {
     areaPopulationCell.innerHTML = rowObject.areaPopulation;
     priceCell.innerHTML = rowObject.price;
     addressCell.innerHTML = rowObject.address;
+
+    //TODO: Move elsewhere
+    //lastly, store the addresses and prices for charting with charts.js
+    similarPricesAddressList.push(rowObject.address);
+    similarPricesList.push(rowObject.price);
   }
+
+  //TODO Move elsewhere.
 }
 
 
@@ -229,12 +240,12 @@ function generateGraph() {
   //construct a new Chart object on the canvas.
   var ctx = document.getElementById('estimate-results-canvas').getContext('2d');
   linearRegressionChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
-      labels: ["one", "two", "three", "four", "five"],
+      labels: similarPricesAddressList,
       datasets: [{
         label: "Price comparison",
-        data: [2, 3, 5, 4, 8],
+        data: similarPricesList,
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 0.5
