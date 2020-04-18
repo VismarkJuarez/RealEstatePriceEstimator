@@ -4,7 +4,7 @@
   padding: 0;
   height: auto;
   width: 100%;
-  background-color: #476481;
+  background-color: #62c4a0;
   text-align: center;
 }
 
@@ -103,10 +103,20 @@
   border: 1px dotted black;
 }
 
+.tableSection
+{
+  display:none;
+}
+
 tr {
   border: 1px dotted black;
 }
 
 td {
   border: 1px dotted black;
+}
+
+.footer {
+  background-color: #2F4F4F;
+  color:white;
 }

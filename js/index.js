@@ -11,7 +11,9 @@ var averageAreaNumberOfRoomsInput = document.getElementById('num_of_rooms');
 var averageAreaHouseAgeInput = document.getElementById('age');
 var averageAreaNumberOfBedroomsInput = document.getElementById('bedrooms');
 var areaPopulationInput = document.getElementById('population');
+
 var similarRecordsTable = document.getElementById('similarRecordsTable');
+var similarRecordsSection = document.querySelector(".tableSection");
 
 var priceEstimateParagraph = document.getElementById('priceEstimate');
 
@@ -67,6 +69,12 @@ function fetchSimilarPricedHomes(price) {
 
 function populateSimilarRecordsTable(rowsList) {
 
+  if(rowsList.length > 0) {
+    showSimilarRecordsTableSection();
+  } else {
+    hideSimilarRecordsTableSection();
+  }
+
   //iterate through each element. Each entry is a new row in the chart.
   for(let i = 0; i < rowsList.length; i++) {
     var rowObject = deserializeRowObject(rowsList[i]);
@@ -102,6 +110,13 @@ function populateSimilarRecordsTable(rowsList) {
   //TODO Move elsewhere.
 }
 
+function showSimilarRecordsTableSection() {
+  similarRecordsSection.style.display = "block";
+}
+
+function hideSimilarRecordsTableSection() {
+  similarRecordsSection.style.display = "none";
+}
 
 /*
 Receives a JSON-string formatted representation of a row, which looks
