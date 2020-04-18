@@ -14,6 +14,7 @@ var areaPopulationInput = document.getElementById('population');
 
 var similarRecordsTable = document.getElementById('similarRecordsTable');
 var similarRecordsSection = document.querySelector(".tableSection");
+var chartCanvasSection = document.querySelector(".chartCanvasDiv");
 
 var priceEstimateParagraph = document.getElementById('priceEstimate');
 
@@ -71,8 +72,10 @@ function populateSimilarRecordsTable(rowsList) {
 
   if(rowsList.length > 0) {
     showSimilarRecordsTableSection();
+    showChartCanvasSection();
   } else {
     hideSimilarRecordsTableSection();
+    hideChartCanvasSection();
   }
 
   //iterate through each element. Each entry is a new row in the chart.
@@ -112,6 +115,14 @@ function populateSimilarRecordsTable(rowsList) {
 
 function showSimilarRecordsTableSection() {
   similarRecordsSection.style.display = "block";
+}
+
+function showChartCanvasSection() {
+  chartCanvasSection.style.display="block";
+}
+
+function hideChartCanvasSection() {
+  chartCanvasSection.style.display="none";
 }
 
 function hideSimilarRecordsTableSection() {
